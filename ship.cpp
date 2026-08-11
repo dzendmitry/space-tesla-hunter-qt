@@ -52,8 +52,7 @@ Ship::Ship(ShipType type, ShipSide side, int maxHealth, QGraphicsItem *parent)
     emit healthChanged(health);
 }
 
-void Ship::decHealth(unsigned damage) {
-    health -= damage;
+void Ship::healthChecks() {
     if (health < maxHealth) {
         state = ShipState::Damaged;
     }
@@ -63,4 +62,17 @@ void Ship::decHealth(unsigned damage) {
     }
     setPixmap(type, shipIndex, health);
     emit healthChanged(health);
+}
+
+void Ship::decHealth(unsigned damage) {
+    health -= damage;
+    healthChecks();
+}
+
+void Ship::setHealth(unsigned health) {
+    if (this->health == health) {
+        return;
+    }
+    this->health = health;
+    healthChecks();
 }

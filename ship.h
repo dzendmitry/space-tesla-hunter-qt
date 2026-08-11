@@ -40,6 +40,7 @@ public:
 
     void setState(ShipState state) { this->state = state; }
     void decHealth(unsigned damage);
+    void setHealth(unsigned health);
 
     static int getHalfWidth() { return DEFAULT_WIDTH / 2; }
     static int getHalfHeight() { return DEFAULT_HEIGHT / 2; }
@@ -51,8 +52,8 @@ signals:
     void healthChanged(int);
 
 private:
-
     void setPixmap(ShipType type, int shipIndex, int health);
+    void healthChecks();
 
     QPixmap pixmap;
     ShipState state;

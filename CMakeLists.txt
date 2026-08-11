@@ -19,6 +19,10 @@ qt_add_executable(space_tesla_hunter
     resources.h resources.cpp
     menugraphicsscene.h menugraphicsscene.cpp
     gameengine.h gameengine.cpp
+
+    apiresponses.h apiresponses.cpp
+    gameenginebase.h gameenginebase.cpp
+    gameenginenet.h gameenginenet.cpp
 )
 
 qt_add_resources(space_tesla_hunter "images"

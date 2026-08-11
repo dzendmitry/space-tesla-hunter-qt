@@ -34,13 +34,8 @@ void GameEngine::stopTheWorld() {
 }
 
 GameEngine::GameEngine(QGraphicsScene* gameScene, QObject* parent)
-    : QObject(parent)
-{
-    if (!gameScene) {
-        throw std::runtime_error("Game Scene for Game Engine MUST exist!");
-    }
-    this->gameScene = gameScene;
-}
+    : GameEngineBase(gameScene, parent)
+{}
 
 void GameEngine::StartNewGame() {
     clashAllowed = true;
@@ -274,16 +269,16 @@ void GameEngine::worldTimerHandler() {
     Ship *player = getPlayerLocalShip();
     if (player != nullptr) {
         QPointF curPos = player->pos();
-        if (direction & 1 && (curPos.y() + Ship::getHalfHeight()) > gameScene->sceneRect().top()) {
+        if (actions & 1 && (curPos.y() + Ship::getHalfHeight()) > gameScene->sceneRect().top()) {
             curPos.ry() -= PLAYER_SHIP_SPEED;
         }
-        if (direction & (1 << 1) && (curPos.x() + Ship::getHalfWidth()) < gameScene->sceneRect().right() ) {
+        if (actions & (1 << 1) && (curPos.x() + Ship::getHalfWidth()) < gameScene->sceneRect().right() ) {
             curPos.rx() += PLAYER_SHIP_SPEED;
         }
-        if (direction & (1 << 2) && (curPos.y() + Ship::getHalfHeight()) < gameScene->sceneRect().bottom()) {
+        if (actions & (1 << 2) && (curPos.y() + Ship::getHalfHeight()) < gameScene->sceneRect().bottom()) {
             curPos.ry() += PLAYER_SHIP_SPEED;
         }
-        if (direction & (1 << 3) && (curPos.x() + Ship::getHalfWidth()) > gameScene->sceneRect().left()) {
+        if (actions & (1 << 3) && (curPos.x() + Ship::getHalfWidth()) > gameScene->sceneRect().left()) {
             curPos.rx() -= PLAYER_SHIP_SPEED;
         }
         player->setPos(curPos);
@@ -310,7 +305,7 @@ void GameEngine::worldTimerHandler() {
 void GameEngine::playerShotTimerHandler() {
 
     // player shots
-    if (playerShot) {
+    if (actions & (1 << 4)) {
         const Ship *playerShip = getPlayerLocalShip();
         if (playerShip) {
             QPointF p = playerShip->pos();
@@ -347,46 +342,6 @@ void GameEngine::clashTimerHandler() {
 
 void GameEngine::enemiesGenTimerHandler() {
     addMoarEnemies();
-}
-
-void GameEngine::keyPressed(int key) {
-    switch(key) {
-    case Qt::Key_Up:
-        direction |= 1;
-        break;
-    case Qt::Key_Right:
-        direction |= (1 << 1);
-        break;
-    case Qt::Key_Down:
-        direction |= (1 << 2);
-        break;
-    case Qt::Key_Left:
-        direction |= (1 << 3);
-        break;
-    case Qt::Key_Space:
-        playerShot = 1;
-        break;
-    }
-}
-
-void GameEngine::keyReleased(int key) {
-    switch(key) {
-    case Qt::Key_Up:
-        direction ^= 1;
-        break;
-    case Qt::Key_Right:
-        direction ^= (1 << 1);
-        break;
-    case Qt::Key_Down:
-        direction ^= (1 << 2);
-        break;
-    case Qt::Key_Left:
-        direction ^= (1 << 3);
-        break;
-    case Qt::Key_Space:
-        playerShot = 0;
-        break;
-    }
 }
 
 GameEngine::~GameEngine() {

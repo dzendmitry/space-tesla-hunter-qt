@@ -5,9 +5,11 @@
 #include <QGraphicsScene>
 #include <QMediaPlayer>
 
-#include "gameengine.h"
+#include "gameenginebase.h"
 #include "gamegraphicscene.h"
 #include "menugraphicsscene.h"
+
+enum class GameMode { Single, Coop };
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,11 +26,11 @@ public:
     ~SpaceTeslaHunter() override;
 
 private slots:
-    void startNewGame(bool);
+    void startNewSingleGame(bool);
     void startNewCoopGame(bool);
     void exitGame(bool);
 
-    void gameFinished(GameStatus status);
+    void gameFinished(GameStatus);
 
 private:
     Ui::SpaceTeslaHunter *ui;
@@ -37,9 +39,10 @@ private:
 
     MenuGraphicsScene *menuScene;
 
-    GameEngine *gameEngine;
+    GameEngineBase *gameEngine;
     GameGraphicScene *gameScene;
 
+    void startNewGame(GameMode);
     void deleteGameObjects();
 
 };
