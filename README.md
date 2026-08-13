@@ -14,6 +14,8 @@ The two modes share the scene, the sprites and the input handling, and differ
 only in who decides where things are — which is why both engines derive from
 `GameEngineBase`.
 
+![Space Tesla Hunter](resources/images/game_1.jpg)
+
 ## Build and run
 
 CMake 3.19+ and Qt 6.5+ with the `Core`, `Widgets` and `Multimedia` modules.
